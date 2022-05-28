@@ -5,18 +5,23 @@ from os import getenv
 from asyncio import run
 
 def get_users() -> list[str]:
-    print(getenv('QDBotIDs'))
+    #print(getenv('QDBotIDs'))
     return getenv('QDBotIDs').split(';')
 
 def check_ok(url: str) -> bool:
     r = httpx.get(url)
-    return r.status_code == httpx.codes.OK
+    #there are various status codes, duckduckgo returns 301; is there a keyword only for errors?
+    #return r.status_code == httpx.codes.OK
+    return r.status_code == 301
 
 async def make_request_to_telegram(service_name: str) -> dict:
     #TODO: implement check with ping
     if check_ok(service_name) == False:
-        print("async")
+        #print("async")
         message = f'⚠️ The service {service_name} results offline!'
+
+        #print("getusers: ")
+        #print(get_users())
 
         for chat_id in get_users():
             print("id: " + chat_id)
