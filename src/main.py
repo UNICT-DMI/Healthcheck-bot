@@ -3,6 +3,8 @@
 import httpx # Yes, we could use requests but httpx supports async tasks and HTTP/2!
 from os import getenv
 from asyncio import run
+import platform    # For getting the operating system name
+import subprocess  # For executing a shell command
 
 def get_users() -> list[str]:
     #print(getenv('QDBotIDs'))
@@ -14,9 +16,25 @@ def check_ok(url: str) -> bool:
     #return r.status_code == httpx.codes.OK
     return r.status_code == 301
 
+#si, è copiata
+def myping(host):
+    """
+    Returns True if host (str) responds to a ping request.
+    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
+    """
+
+    # Option for the number of packets as a function of
+    param = '-n' if platform.system().lower()=='windows' else '-c'
+
+    # Building the command. Ex: "ping -c 1 google.com"
+    command = ['ping', param, '1', host]
+
+    return subprocess.call(command) == 0
+
+
 async def make_request_to_telegram(service_name: str) -> dict:
-    #TODO: implement check with ping
-    if check_ok(service_name) == False:
+    
+    if check_ok(service_name) == False or myping(service_name[7:-1]) == False:
         #print("async")
         message = f'⚠️ The service {service_name} results offline!'
 
