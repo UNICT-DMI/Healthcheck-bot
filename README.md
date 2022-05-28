@@ -15,6 +15,6 @@ Just set two env variables:
 ### Example in bash
 ```bash
 export QDBotToken="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
-export QDBotIDs=10000000                                      # Single ID
-export QDBotIDs=10000000;10000001;10000002                    # Multiple IDs
+export QDBotIDs="10000000"                                      # Single ID
+export QDBotIDs="10000000;10000001;10000002"                    # Multiple IDs
 ```
