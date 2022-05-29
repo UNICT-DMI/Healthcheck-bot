@@ -21,8 +21,33 @@ tests = [
         'mock_func': ['getenv'],
         'mock_ret': ['12345678;23456789'],
         'is_async': False
+    },
+    {
+        'func': main.check_ok,
+        'expected_res': [True],
+        'arg': ('http://example.org/',),
+        'is_async': False
+    },
+    {
+        'func': main.check_ok,
+        'expected_res': [False],
+        'arg': ('garbage',),
+        'is_async': False
+    },
+    {
+        'func': main.check_ping,
+        'expected_res': [True],
+        'arg': ('example.org',),
+        'is_async': False
+    },
+    {
+        'func': main.check_ping,
+        'expected_res': [False],
+        'arg': ('garbage',),
+        'is_async': False
     }
 ]
+#last 4 tests are incomplete; might want to mock some calls
 
 @pytest.mark.parametrize('test', tests)
 async def test_generic(mocker: MockerFixture, test: dict) -> None:
@@ -45,5 +70,6 @@ async def test_init(mocker: MockerFixture) -> None:
     mocker.patch.object(main, "__name__", "__main__")
     mocker.patch.object(main, 'main', return_value=None)
 
+    #this is broken
     assert await main.init() == None
     
