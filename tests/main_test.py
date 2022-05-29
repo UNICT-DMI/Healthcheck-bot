@@ -1,4 +1,3 @@
-from asyncio import subprocess
 import pytest
 from pytest_mock import MockerFixture
 import src.main as main
@@ -66,7 +65,7 @@ async def test_generic(mocker: MockerFixture, test: dict) -> None:
     for index, spy in enumerate(spyed_objs):
         assert spy.spy_return == test['mock_ret'][index]
 
-async def test_init(mocker: MockerFixture) -> None:
+def test_init(mocker: MockerFixture) -> None:
     mocker.patch.object(main, "__name__", "__main__")
     mocker.patch.object(main, 'main', return_value=None)
 
