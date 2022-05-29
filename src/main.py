@@ -9,7 +9,15 @@ from urllib import parse
 
 
 def get_users() -> list[str]:
+    #print(getenv('QDBotIDs'))
     return getenv('QDBotIDs').split(';')
+
+ 
+def check_ok(url: str) -> bool:
+    r = httpx.get(url)
+    #there are various status codes, duckduckgo returns 301; is there a keyword only for errors?
+    #return r.status_code == httpx.codes.OK
+    return r.status_code < 400
 
 
 def check_ok(url: str) -> bool:
@@ -18,12 +26,13 @@ def check_ok(url: str) -> bool:
     #return r.status_code == httpx.codes.OK
     return r.status_code < 400
 
-
+  
 def my_ping(host):
     """
     Returns True if host (str) responds to a ping request.
     Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
     """
+
 
     # Option for the number of packets as a function of
     param = '-n' if platform.system().lower()=='windows' else '-c'
