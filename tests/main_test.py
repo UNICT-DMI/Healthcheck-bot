@@ -70,5 +70,5 @@ async def test_init(mocker: MockerFixture) -> None:
     mocker.patch.object(main, "__name__", "__main__")
     mocker.patch.object(main, 'main', return_value=None)
 
-    main.init() == None
+    assert main.init() == None
     
