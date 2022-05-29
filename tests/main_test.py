@@ -27,7 +27,7 @@ tests = [
     {
         'func': main.check_ping,
         'expected_res': True,
-        'arg': ('example.org',),
+        'arg': ('google.com',),
     },
     {
         'func': main.check_ping,
