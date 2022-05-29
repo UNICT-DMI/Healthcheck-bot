@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import httpx # Yes, we could use requests but httpx supports async tasks and HTTP/2!
+from httpx import AsyncClient, codes # Yes, we could use requests but httpx supports async tasks and HTTP/2!
 from os import getenv
 from asyncio import run
 import platform    # For getting the operating system name
@@ -14,10 +14,10 @@ def get_users() -> list[str]:
     return getenv('QDBotIDs').split(';')
 
 
-def check_ok(url: str) -> bool:
-    r = httpx.get(url)
-    #may want to use a keyword instead
-    return r.status_code < 400
+async def check_ok(url: str) -> bool:
+    async with AsyncClient(http2=True, follow_redirects=True) as client:
+        r = client.get(url)
+        return codes.is_success(r.status_code)
 
   
 def check_ping(host: str) -> bool:
@@ -31,7 +31,7 @@ async def make_request_to_telegram(service_name: str, method_used: str, chat_id:
     message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
     url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
 
-    async with httpx.AsyncClient(http2=True) as client:
+    async with AsyncClient(http2=True) as client:
         res = await client.post(url)
         return res.json()
 
@@ -44,7 +44,7 @@ def obtain_hostname(url: str) -> str:
 def handle_urls(url: str, method: str) -> None:
     match method:
         case 'get':
-            check_result = check_ok(url)
+            check_result = run(check_ok(url))
         case 'ping':
             hostname = obtain_hostname(url)
             check_result = check_ping(hostname)
