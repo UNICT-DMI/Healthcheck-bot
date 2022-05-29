@@ -37,18 +37,18 @@ def my_ping(host):
 
 
 async def make_request_to_telegram(service_name: str, hostname: str) -> dict:
-        message = f'⚠️ The service {service_name} results offline!'
+    message = f'⚠️ The service {service_name} results offline!'
 
-        #print("getusers: ")
-        #print(get_users())
+    #print("getusers: ")
+    #print(get_users())
 
-        for chat_id in get_users():
-            print("id: " + chat_id)
-            url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
+    for chat_id in get_users():
+        print("id: " + chat_id)
+        url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
 
-            async with httpx.AsyncClient(http2=True) as client:
-                res = await client.post(url)
-                return res.json()
+        async with httpx.AsyncClient(http2=True) as client:
+            res = await client.post(url)
+            return res.json()
 
 
 def obtain_hostname(url: str) -> str:
