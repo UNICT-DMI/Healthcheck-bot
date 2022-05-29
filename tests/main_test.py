@@ -1,4 +1,3 @@
-import httpx
 import pytest
 from pytest_mock import MockerFixture
 import src.main as main
@@ -21,30 +20,6 @@ tests = [
         'mock_obj': [main],
         'mock_func': ['getenv'],
         'mock_ret': ['12345678;23456789'],
-        'is_async': False
-    },
-    {
-        'func': main.check_ok,
-        'expected_res': [True],
-        'arg': ('http://example.org/',),
-        'is_async': False
-    },
-    {
-        'func': main.check_ok,
-        'expected_res': [False],
-        'arg': ('garbage',),
-        'is_async': False
-    },
-    {
-        'func': main.check_ping,
-        'expected_res': [True],
-        'arg': ('example.org',),
-        'is_async': False
-    },
-    {
-        'func': main.check_ping,
-        'expected_res': [False],
-        'arg': ('garbage',),
         'is_async': False
     }
 ]
@@ -70,6 +45,5 @@ async def test_init(mocker: MockerFixture) -> None:
     mocker.patch.object(main, "__name__", "__main__")
     mocker.patch.object(main, 'main', return_value=None)
 
-    #this is broken
     assert await main.init() == None
     
