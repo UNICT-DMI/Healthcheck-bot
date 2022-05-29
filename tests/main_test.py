@@ -65,23 +65,23 @@ tests = [
         'arg': ('http://example.com', 'get'),
         'mock_obj': [main, main, main],
         'mock_func': ['get_users', 'run', 'sleep'],
-        'mock_ret': [['12345678'], {"ok":False,"error_code":429,"description":"Unauthorized"}, None],
+        'mock_ret': [['12345678'], {"ok":False,"error_code":429,"description":"Unauthorized"}, None]
     },
     {
         'func': main.handle_communication,
         'expected_res': None,
         'arg': ('http://example.com', 'get'),
-        'mock_obj': [main, main],
+        'mock_obj': [main, main, main],
         'mock_func': ['get_users', 'run'],
-        'mock_ret': [['12345678'], {"ok":True,"error_code":429,"description":"Unauthorized"}],
+        'mock_ret': [['12345678'], {"ok":True,"error_code":429,"description":"Unauthorized"}]
     },
     {
         'func': main.handle_communication,
         'expected_res': None,
         'arg': ('http://example.com', 'get'),
-        'mock_obj': [main, main],
+        'mock_obj': [main, main, main],
         'mock_func': ['get_users', 'run'],
-        'mock_ret': [[], None],
+        'mock_ret': [[], None]
     },
     {
         'func': main.main,
@@ -89,7 +89,7 @@ tests = [
         'arg': tuple(),
         'mock_obj': [main],
         'mock_func': ['handle_urls'],
-        'mock_ret': [None],
+        'mock_ret': [None]
     }
 ]
 
