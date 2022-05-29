@@ -21,6 +21,30 @@ tests = [
         'mock_func': ['getenv'],
         'mock_ret': ['12345678;23456789'],
         'is_async': False
+    },
+    {
+        'func': main.check_ok,
+        'expected_res': True,
+        'arg': ('http://example.org/',),
+        'is_async': False
+    },
+    {
+        'func': main.check_ok,
+        'expected_res': False,
+        'arg': ('https://github.com/404',),
+        'is_async': False
+    },
+    {
+        'func': main.check_ping,
+        'expected_res': True,
+        'arg': ('example.org',),
+        'is_async': False
+    },
+    {
+        'func': main.check_ping,
+        'expected_res': False,
+        'arg': ('wrongurlpage.com',),
+        'is_async': False
     }
 ]
 
@@ -41,9 +65,9 @@ async def test_generic(mocker: MockerFixture, test: dict) -> None:
     for index, spy in enumerate(spyed_objs):
         assert spy.spy_return == test['mock_ret'][index]
 
-async def test_init(mocker: MockerFixture) -> None:
+def test_init(mocker: MockerFixture) -> None:
     mocker.patch.object(main, "__name__", "__main__")
     mocker.patch.object(main, 'main', return_value=None)
 
-    assert await main.init() == None
+    assert main.init() == None
     
