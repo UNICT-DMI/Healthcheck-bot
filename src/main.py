@@ -56,7 +56,7 @@ def handle_urls(url: str, method: str) -> None:
             check_result = check_ping(hostname)
     
     if not check_result:
-        handle_retries(url,method,5)
+        handle_retries(url, method, 5)
     else:
         print(f'✅ Execution of {method} with address {url} succeeded')
 
@@ -67,7 +67,7 @@ def handle_retries(url: str, method: str, tries: int) -> None:
     for mess in tg_res:
         print(f"mess: {mess}")
    
-        if not mess['ok']:
+        if tries > 0 and not mess['ok']:
             print(f"Error {str(mess['error_code'])}: {mess['description']}")
 
             if mess['error_code'] == 429:
@@ -75,8 +75,7 @@ def handle_retries(url: str, method: str, tries: int) -> None:
                 sleep(30)
                 print("Error 429")
 
-            if tries > 0:
-                handle_retries(url,method,tries-1)
+            handle_retries(url, method, tries-1)
         else:
             print("Message sent succesfully")
     
