@@ -9,27 +9,19 @@ from urllib import parse
 
 
 def get_users() -> list[str]:
-    #print(getenv('QDBotIDs'))
     return getenv('QDBotIDs').split(';')
 
 
 def check_ok(url: str) -> bool:
     r = httpx.get(url)
-    #there are various status codes, duckduckgo returns 301; is there a keyword only for errors?
-    #return r.status_code == httpx.codes.OK
+    #may want to use a keyword instead
     return r.status_code < 400
 
   
-def my_ping(host):
-    """
-    Returns True if host (str) responds to a ping request.
-    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
-    """
+def check_ping(host: str) -> bool:
 
-    # Option for the number of packets as a function of
     param = '-n' if platform.system().lower()=='windows' else '-c'
 
-    # Building the command. Ex: "ping -c 1 google.com"
     command = ['ping', param, '1', host]
 
     return subprocess.call(command) == 0
@@ -40,7 +32,6 @@ async def make_request_to_telegram(service_name: str, method_used: str) -> list:
     message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
 
     for chat_id in get_users():
-        print("id: " + chat_id)
         url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
 
         async with httpx.AsyncClient(http2=True) as client:
@@ -61,7 +52,7 @@ def handle_urls(url: str, method: str) -> None:
             check_result = check_ok(url)
         case 'ping':
             hostname = obtain_hostname(url)
-            check_result = my_ping(hostname)
+            check_result = check_ping(hostname)
     
     if not check_result:
         tg_res = run(make_request_to_telegram(url, method))
