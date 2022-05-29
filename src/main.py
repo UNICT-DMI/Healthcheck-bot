@@ -16,7 +16,7 @@ def get_users() -> list[str]:
 
 async def check_ok(url: str) -> bool:
     async with AsyncClient(http2=True, follow_redirects=True) as client:
-        r = client.get(url)
+        r = await client.get(url)
         return codes.is_success(r.status_code)
 
   
