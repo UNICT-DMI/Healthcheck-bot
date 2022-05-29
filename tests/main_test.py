@@ -32,7 +32,7 @@ tests = [
     {
         'func': main.check_ok,
         'expected_res': False,
-        'arg': ('http://wrongurlpage.com/',),
+        'arg': ('https://github.com/404',),
         'is_async': False
     },
     {
