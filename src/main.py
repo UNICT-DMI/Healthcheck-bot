@@ -6,6 +6,7 @@ from asyncio import run
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
 from urllib import parse
+from time import sleep
 
 
 def get_users() -> list[str]:
@@ -20,7 +21,7 @@ def check_ok(url: str) -> bool:
   
 def check_ping(host: str) -> bool:
 
-    param = '-n' if platform.system().lower()=='windows' else '-c'
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
 
     command = ['ping', param, '1', host]
 
@@ -55,10 +56,30 @@ def handle_urls(url: str, method: str) -> None:
             check_result = check_ping(hostname)
     
     if not check_result:
-        tg_res = run(make_request_to_telegram(url, method))
-        print(tg_res)
+        handle_retries(url,method,5)
     else:
         print(f'✅ Execution of {method} with address {url} succeeded')
+
+def handle_retries(url: str, method: str, tries: int) -> None:
+
+    tg_res = run(make_request_to_telegram(url, method))
+
+    for mess in tg_res:
+        print(f"mess: {mess}")
+   
+        if not mess['ok']:
+            print(f"Error {str(mess['error_code'])}: {mess['description']}")
+
+            if mess['error_code'] == 429:
+                #too many requests
+                sleep(30)
+                print("Error 429")
+
+            if tries > 0:
+                handle_retries(url,method,tries-1)
+        else:
+            print("Message sent succesfully")
+    
 
 
 def main() -> None:
