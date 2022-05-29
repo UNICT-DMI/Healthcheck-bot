@@ -75,10 +75,10 @@ tests = [
     {
         'func': main.handle_communication,
         'expected_res': None,
-        'arg': ('http://example.com'),
-        'mock_obj': [main],
-        'mock_func': ['get_users'],
-        'mock_ret': [[]],
+        'arg': ('http://example.com', 'get'),
+        'mock_obj': [main, main],
+        'mock_func': ['get_users', 'run'],
+        'mock_ret': [[], None],
     },
     {
         'func': main.main,
