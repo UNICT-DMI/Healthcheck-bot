@@ -14,10 +14,10 @@ def check_ok(url: str) -> bool:
     r = httpx.get(url)
     #there are various status codes, duckduckgo returns 301; is there a keyword only for errors?
     #return r.status_code == httpx.codes.OK
-    return r.status_code == 301
+    return r.status_code < 400
 
 #si, è copiata
-def myping(host):
+def my_ping(host):
     """
     Returns True if host (str) responds to a ping request.
     Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
@@ -32,10 +32,10 @@ def myping(host):
     return subprocess.call(command) == 0
 
 
-async def make_request_to_telegram(service_name: str) -> dict:
+async def make_request_to_telegram(service_name: str,hostname: str) -> dict:
     
-    if check_ok(service_name) == False or myping(service_name[7:-1]) == False:
-        #print("async")
+    if check_ok(service_name) == False or my_ping(hostname) == False:
+        
         message = f'⚠️ The service {service_name} results offline!'
 
         #print("getusers: ")
@@ -51,4 +51,4 @@ async def make_request_to_telegram(service_name: str) -> dict:
 
 
 if __name__ == '__main__':
-    run(make_request_to_telegram('http://duckduckgo.com/'))
+    run(make_request_to_telegram('http://example.org','example.org'))
