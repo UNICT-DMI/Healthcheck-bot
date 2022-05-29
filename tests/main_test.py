@@ -71,7 +71,7 @@ tests = [
         'func': main.handle_communication,
         'expected_res': None,
         'arg': ('http://example.com', 'get'),
-        'mock_obj': [main, main, main],
+        'mock_obj': [main, main],
         'mock_func': ['get_users', 'run'],
         'mock_ret': [['12345678'], {"ok":True,"error_code":429,"description":"Unauthorized"}]
     },
@@ -79,7 +79,7 @@ tests = [
         'func': main.handle_communication,
         'expected_res': None,
         'arg': ('http://example.com', 'get'),
-        'mock_obj': [main, main, main],
+        'mock_obj': [main, main],
         'mock_func': ['get_users', 'run'],
         'mock_ret': [[], None]
     },
