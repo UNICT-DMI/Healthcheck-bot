@@ -1,0 +1,4 @@
+{ 
+    "get": ["https://duckduckgo.com/", "https://google.com/"], 
+    "ping": ["https://duckduckgo.com/", "https://google.com/"]
+}

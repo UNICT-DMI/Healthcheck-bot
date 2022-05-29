@@ -7,6 +7,7 @@ import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
 from urllib import parse
 from time import sleep
+from json import load
 
 
 def get_users() -> list[str]:
@@ -73,10 +74,8 @@ def handle_communication(url: str, method: str) -> None:
 
 
 def main() -> None:
-    urls_list = { # This should be loaded from a json
-        'get': ['https://duckduckgo.com/', 'https://google.com/'], 
-        'ping': ['https://duckduckgo.com/', 'https://google.com/']
-    }
+    with open("src/urls.json", "r") as f:
+        urls_list = load(f)
 
     for method, urls in urls_list.items():
         for url in urls:
