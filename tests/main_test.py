@@ -1,3 +1,4 @@
+from asyncio import subprocess
 import pytest
 from pytest_mock import MockerFixture
 import src.main as main
@@ -24,30 +25,30 @@ tests = [
     },
     {
         'func': main.check_ok,
-        'expected_res': [True],
+        'expected_res': True,
         'arg': ('http://example.org/',),
         'is_async': False
     },
     {
         'func': main.check_ok,
-        'expected_res': [False],
-        'arg': ('garbage',),
+        'expected_res': False,
+        'arg': ('http://wrongurlpage.com/',),
         'is_async': False
     },
     {
         'func': main.check_ping,
-        'expected_res': [True],
+        'expected_res': True,
         'arg': ('example.org',),
         'is_async': False
     },
     {
         'func': main.check_ping,
-        'expected_res': [False],
-        'arg': ('garbage',),
+        'expected_res': False,
+        'arg': ('wrongurlpage.com',),
         'is_async': False
     }
 ]
-#last 4 tests are incomplete; might want to mock some calls
+#might want to mock some calls
 
 @pytest.mark.parametrize('test', tests)
 async def test_generic(mocker: MockerFixture, test: dict) -> None:
