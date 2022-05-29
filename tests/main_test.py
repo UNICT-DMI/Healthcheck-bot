@@ -1,7 +1,5 @@
-from asyncio import Future
 import pytest
 from pytest_mock import MockerFixture
-from unittest.mock import AsyncMock
 import src.main as main
 
 
