@@ -5,14 +5,6 @@ import src.main as main
 
 tests = [
     {
-        'func': main.get_users,
-        'expected_res': ['12345678', '23456789'],
-        'arg': tuple(),
-        'mock_obj': [main],
-        'mock_func': ['getenv'],
-        'mock_ret': ['12345678;23456789'],
-    },
-    {
         'func': main.check_ok,
         'expected_res': True,
         'arg': ('http://example.org/',),
@@ -26,18 +18,13 @@ tests = [
     },
     {
         'func': main.check_ping,
-        'expected_res': True,
-        'arg': ('google.com',),
-    },
-    {
-        'func': main.check_ping,
         'expected_res': False,
-        'arg': ('wrongurlpage.com',),
+        'arg': ('wrongurlpage.com',)
     }, 
     {
         'func': main.obtain_hostname,
         'expected_res': 'example.com',
-        'arg': ('http://example.com',),
+        'arg': ('http://example.com',)
     },
     {
         'func': main.get_users,
@@ -45,7 +32,23 @@ tests = [
         'arg': tuple(),
         'mock_obj': [main],
         'mock_func': ['getenv'],
-        'mock_ret': ['12345678'],
+        'mock_ret': ['12345678']
+    },
+    {
+        'func': main.get_users,
+        'expected_res': ['12345678', '23456789'],
+        'arg': tuple(),
+        'mock_obj': [main],
+        'mock_func': ['getenv'],
+        'mock_ret': ['12345678;23456789']
+    },
+    {
+        'func': main.check_ping,
+        'expected_res': True,
+        'arg': ('example.org',),
+        'mock_obj': [main.subprocess],
+        'mock_func': ['call'],
+        'mock_ret': [0]
     },
     {
         'func': main.make_request_to_telegram,
