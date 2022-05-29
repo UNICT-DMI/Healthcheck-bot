@@ -5,6 +5,7 @@ from os import getenv
 from asyncio import run
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
+from urllib import parse
 
 
 def get_users() -> list[str]:
@@ -33,10 +34,7 @@ def my_ping(host):
     return subprocess.call(command) == 0
 
 
-async def make_request_to_telegram(service_name: str,hostname: str) -> dict:
-    
-    if check_ok(service_name) == False or my_ping(hostname) == False:
-        
+async def make_request_to_telegram(service_name: str, hostname: str) -> dict:
         message = f'⚠️ The service {service_name} results offline!'
 
         #print("getusers: ")
@@ -51,13 +49,37 @@ async def make_request_to_telegram(service_name: str,hostname: str) -> dict:
                 return res.json()
 
 
-async def main() -> None:
-    await make_request_to_telegram('https://duckduckgo.com/')
+def obtain_hostname(url: str) -> str:
+    url_obj = parse.urlparse(url)
+    return url_obj.netloc.replace('www.', '')
 
 
-async def init() -> None:
+def handle_urls(url: str, method: str) -> None:
+    match method:
+        case 'get':
+            check_result = check_ok(url)
+        case 'ping':
+            hostname = obtain_hostname(url)
+            check_result = my_ping(hostname)
+    
+    if not check_result:
+        run(make_request_to_telegram('https://duckduckgo.com/'))
+
+
+def main() -> None:
+    urls_list = { # This should be loaded from a json
+        'get': ['https://duckduckgo.com/', 'https://google.com/'], 
+        'ping': ['https://duckduckgo.com/', 'https://google.com/']
+    }
+
+    for method, url in urls_list.items():
+        handle_urls(url, method)
+        
+
+
+def init() -> None:
     if __name__ == '__main__':
-        await main() 
+        main() 
 
 
 run(init())
