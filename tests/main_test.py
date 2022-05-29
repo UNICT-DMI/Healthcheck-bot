@@ -60,6 +60,38 @@ tests = [
         'is_async': True  
     },
     {
+        'func': main.handle_urls,
+        'expected_res': None,
+        'arg': ('http://example.com', 'get'),
+        'mock_obj': [main],
+        'mock_func': ['run'],
+        'mock_ret': [True]
+    },
+    {
+        'func': main.handle_urls,
+        'expected_res': None,
+        'arg': ('http://example.com', 'get'),
+        'mock_obj': [main,main],
+        'mock_func': ['run','handle_communication'],
+        'mock_ret': [False,None]
+    },
+    {
+        'func': main.handle_urls,
+        'expected_res': None,
+        'arg': ('http://example.com', 'ping'),
+        'mock_obj': [main,main],
+        'mock_func': ['obtain_hostname','check_ping'],
+        'mock_ret': ['example.com',True]
+    },
+    {
+        'func': main.handle_urls,
+        'expected_res': None,
+        'arg': ('http://example.com', 'ping'),
+        'mock_obj': [main,main,main],
+        'mock_func': ['obtain_hostname','check_ping','handle_communication'],
+        'mock_ret': ['example.com',False,None]
+    },
+    {
         'func': main.handle_communication,
         'expected_res': None,
         'arg': ('http://example.com', 'get'),
