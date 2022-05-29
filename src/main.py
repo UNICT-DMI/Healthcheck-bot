@@ -20,33 +20,19 @@ def check_ok(url: str) -> bool:
 
   
 def check_ping(host: str) -> bool:
-
     param = '-n' if platform.system().lower() == 'windows' else '-c'
-
     command = ['ping', param, '1', host]
 
     return subprocess.call(command) == 0
 
 
-async def make_request_to_telegram(service_name: str, method_used: str) -> list:
-    tg_responses = []
+async def make_request_to_telegram(service_name: str, method_used: str, chat_id: str) -> list:
     message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
+    url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
 
-    users_list = get_users()
-    
-    for chat_id in users_list:
-        url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
-
-        async with httpx.AsyncClient(http2=True) as client:
-            res = await client.post(url)
-            """
-            #TODO: limit number of append
-            if not (handle_responses(res)):
-                users_list.append(chat_id)
-            """
-            tg_responses.append(res.json())
-    
-    return tg_responses
+    async with httpx.AsyncClient(http2=True) as client:
+        res = await client.post(url)
+        return res.json()
 
 
 def obtain_hostname(url: str) -> str:
@@ -63,27 +49,27 @@ def handle_urls(url: str, method: str) -> None:
             check_result = check_ping(hostname)
     
     if not check_result:
-        tg_res = run(make_request_to_telegram(url, method))
-        #handle_retries(url, method, 5)
+        handle_communication(url, method)
     else:
         print(f'✅ Execution of {method} with address {url} succeeded')
 
-"""
-def handle_responses(res) -> bool:
-   
-    if not res['ok']:
-        print(f"Error {str(res['error_code'])}: {res['description']}")
 
-        if res['error_code'] == 429:
-            #too many requests
-            sleep(30)
-            print("Error 429")
+def handle_communication(url: str, method: str) -> None:
+    obtained_ids = get_users()
 
-        return False
-    else:
-        print("Message sent succesfully")
-        return True
-"""  
+    for _ in range(5):
+        if obtained_ids == []:
+            return
+
+        for id in obtained_ids:
+            tg_res = run(make_request_to_telegram(url, method, id))
+
+            if tg_res['ok']:
+                print(f'Message sent successfully to {id}')
+                obtained_ids.remove(id)
+            elif tg_res['error_code'] == 429:
+                sleep(30)
+                print('Error 429, aka too many requests')
 
 
 def main() -> None:
