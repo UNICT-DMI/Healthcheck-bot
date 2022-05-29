@@ -12,13 +12,6 @@ def get_users() -> list[str]:
     #print(getenv('QDBotIDs'))
     return getenv('QDBotIDs').split(';')
 
- 
-def check_ok(url: str) -> bool:
-    r = httpx.get(url)
-    #there are various status codes, duckduckgo returns 301; is there a keyword only for errors?
-    #return r.status_code == httpx.codes.OK
-    return r.status_code < 400
-
 
 def check_ok(url: str) -> bool:
     r = httpx.get(url)
