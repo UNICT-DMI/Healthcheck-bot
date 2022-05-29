@@ -48,7 +48,6 @@ tests = [
         'is_async': False
     }
 ]
-#might want to mock some calls
 
 @pytest.mark.parametrize('test', tests)
 async def test_generic(mocker: MockerFixture, test: dict) -> None:
