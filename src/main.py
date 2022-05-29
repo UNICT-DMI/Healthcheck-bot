@@ -26,7 +26,6 @@ def my_ping(host):
     Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
     """
 
-
     # Option for the number of packets as a function of
     param = '-n' if platform.system().lower()=='windows' else '-c'
 
@@ -36,11 +35,9 @@ def my_ping(host):
     return subprocess.call(command) == 0
 
 
-async def make_request_to_telegram(service_name: str, hostname: str) -> dict:
-    message = f'⚠️ The service {service_name} results offline!'
-
-    #print("getusers: ")
-    #print(get_users())
+async def make_request_to_telegram(service_name: str, method_used: str) -> list:
+    tg_responses = []
+    message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
 
     for chat_id in get_users():
         print("id: " + chat_id)
@@ -48,7 +45,9 @@ async def make_request_to_telegram(service_name: str, hostname: str) -> dict:
 
         async with httpx.AsyncClient(http2=True) as client:
             res = await client.post(url)
-            return res.json()
+            tg_responses.append(res.json())
+    
+    return tg_responses
 
 
 def obtain_hostname(url: str) -> str:
@@ -65,7 +64,10 @@ def handle_urls(url: str, method: str) -> None:
             check_result = my_ping(hostname)
     
     if not check_result:
-        run(make_request_to_telegram('https://duckduckgo.com/'))
+        tg_res = run(make_request_to_telegram(url, method))
+        print(tg_res)
+    else:
+        print(f'✅ Execution of {method} with address {url} succeeded')
 
 
 def main() -> None:
@@ -74,8 +76,9 @@ def main() -> None:
         'ping': ['https://duckduckgo.com/', 'https://google.com/']
     }
 
-    for method, url in urls_list.items():
-        handle_urls(url, method)
+    for method, urls in urls_list.items():
+        for url in urls:
+            handle_urls(url, method)
         
 
 
@@ -84,4 +87,4 @@ def init() -> None:
         main() 
 
 
-run(init())
+init()
