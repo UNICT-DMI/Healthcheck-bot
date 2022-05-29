@@ -32,11 +32,18 @@ async def make_request_to_telegram(service_name: str, method_used: str) -> list:
     tg_responses = []
     message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
 
-    for chat_id in get_users():
+    users_list = get_users()
+    
+    for chat_id in users_list:
         url = f'https://api.telegram.org/bot{getenv("QDBotToken")}/sendMessage?chat_id={chat_id}&text={message}'
 
         async with httpx.AsyncClient(http2=True) as client:
             res = await client.post(url)
+            """
+            #TODO: limit number of append
+            if not (handle_responses(res)):
+                users_list.append(chat_id)
+            """
             tg_responses.append(res.json())
     
     return tg_responses
@@ -56,29 +63,27 @@ def handle_urls(url: str, method: str) -> None:
             check_result = check_ping(hostname)
     
     if not check_result:
-        handle_retries(url, method, 5)
+        tg_res = run(make_request_to_telegram(url, method))
+        #handle_retries(url, method, 5)
     else:
         print(f'✅ Execution of {method} with address {url} succeeded')
 
-def handle_retries(url: str, method: str, tries: int) -> None:
-
-    tg_res = run(make_request_to_telegram(url, method))
-
-    for mess in tg_res:
-        print(f"mess: {mess}")
+"""
+def handle_responses(res) -> bool:
    
-        if tries > 0 and not mess['ok']:
-            print(f"Error {str(mess['error_code'])}: {mess['description']}")
+    if not res['ok']:
+        print(f"Error {str(res['error_code'])}: {res['description']}")
 
-            if mess['error_code'] == 429:
-                #too many requests
-                sleep(30)
-                print("Error 429")
+        if res['error_code'] == 429:
+            #too many requests
+            sleep(30)
+            print("Error 429")
 
-            handle_retries(url, method, tries-1)
-        else:
-            print("Message sent succesfully")
-    
+        return False
+    else:
+        print("Message sent succesfully")
+        return True
+"""  
 
 
 def main() -> None:
