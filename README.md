@@ -1,5 +1,6 @@
 # Healthcheck-bot
 ![CI Badge](https://github.com/QD-2022/Healthcheck-bot/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/QD-2022/Healthcheck-bot/branch/main/graph/badge.svg?token=G54CHQRYTC)](https://codecov.io/gh/QD-2022/Healthcheck-bot)
 
 <p align="center">
     <img src="icon.jpeg" alt="logo" width="200">
