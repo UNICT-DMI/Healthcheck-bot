@@ -1,5 +1,6 @@
 import pytest
 from pytest_mock import MockerFixture
+from unittest.mock import AsyncMock
 import src.main as main
 
 
@@ -65,7 +66,7 @@ tests = [
         'arg': ('http://example.com', 'get'),
         'mock_obj': [main],
         'mock_func': ['run'],
-        'mock_ret': [True]
+        'mock_ret': [AsyncMock(return_value=True)]
     },
     {
         'func': main.handle_urls,
@@ -73,7 +74,7 @@ tests = [
         'arg': ('http://example.com', 'get'),
         'mock_obj': [main, main],
         'mock_func': ['run', 'handle_communication'],
-        'mock_ret': [False, None]
+        'mock_ret': [AsyncMock(return_value=False), None]
     },
     {
         'func': main.handle_urls,
@@ -105,7 +106,7 @@ tests = [
         'arg': ('http://example.com', 'get'),
         'mock_obj': [main, main],
         'mock_func': ['get_users', 'run'],
-        'mock_ret': [['12345678'], {"ok":True,"error_code":429,"description":"Unauthorized"}]
+        'mock_ret': [['12345678'], {"ok":True,"error_code":429,"description":"Fine"}]
     },
     {
         'func': main.handle_communication,
@@ -148,4 +149,3 @@ def test_init(mocker: MockerFixture) -> None:
     mocker.patch.object(main, 'main', return_value=None)
 
     assert main.init() == None
-    
