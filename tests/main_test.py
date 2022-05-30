@@ -71,25 +71,25 @@ tests = [
         'func': main.handle_urls,
         'expected_res': None,
         'arg': ('http://example.com', 'get'),
-        'mock_obj': [main,main],
-        'mock_func': ['run','handle_communication'],
-        'mock_ret': [False,None]
+        'mock_obj': [main, main],
+        'mock_func': ['run', 'handle_communication'],
+        'mock_ret': [False, None]
     },
     {
         'func': main.handle_urls,
         'expected_res': None,
         'arg': ('http://example.com', 'ping'),
-        'mock_obj': [main,main],
-        'mock_func': ['obtain_hostname','check_ping'],
-        'mock_ret': ['example.com',True]
+        'mock_obj': [main, main],
+        'mock_func': ['obtain_hostname', 'check_ping'],
+        'mock_ret': ['example.com', True]
     },
     {
         'func': main.handle_urls,
         'expected_res': None,
         'arg': ('http://example.com', 'ping'),
-        'mock_obj': [main,main,main],
-        'mock_func': ['obtain_hostname','check_ping','handle_communication'],
-        'mock_ret': ['example.com',False,None]
+        'mock_obj': [main, main, main],
+        'mock_func': ['obtain_hostname', 'check_ping', 'handle_communication'],
+        'mock_ret': ['example.com', False, None]
     },
     {
         'func': main.handle_communication,
@@ -133,10 +133,10 @@ async def test_generic(mocker: MockerFixture, test: dict) -> None:
             mocker.patch.object(obj, test['mock_func'][index], return_value=test['mock_ret'][index])
             spyed_objs.append(mocker.spy(obj, test['mock_func'][index]))
 
-    if test.get('is_async') is None:
-        res = test['func'](*test['arg'])
+    if test.get('is_async'):
+        res = await test['func'](*test['arg'])
     else:
-        res = await test['func'](*test['arg'])        
+        res = test['func'](*test['arg'])       
 
     assert res == test['expected_res']
     for index, spy in enumerate(spyed_objs):
