@@ -14,7 +14,7 @@ tests = [
     {
         'func': main.check_ok,
         'expected_res': False,
-        'arg': ('https://github.com/404',),
+        'arg': ('https://github.com/IDontThinkThisPageWillEverExist',),
         'is_async': True
     },
     {
