@@ -9,23 +9,26 @@
 A simple Python script to verify if a service is up. Whenever the service falls, a message will be sent to a user/group/channel with Telegram
 
 ## How to use?
-This script is designed to execute a cyclic operation based on a configurable timeout. To start and stop the script, follow the instructions below:
-
 - Set two env variables:
 - `QDBotToken`, your bot token
 - `QDBotIDs`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
 
-#### Example in bash
+### Example in bash
 ```bash
 export QDBotToken="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
 export QDBotIDs="10000000"                                      # Single ID
 export QDBotIDs="10000000;10000001;10000002"                    # Multiple IDs
 ```
 
-### Starting the script 
-- You can start the script in the background using either of the following commands: `sh run.sh &` or `bash run.sh &`.
-
-- To stop the script just create a file named `stop.flag` in the same directory as the script using: `touch stop.flag`. The script will detect the presence of this file and stop after completing the current cycle.
+### Run it every 5 minutes using crontab
+- Open crontab using:
+```bash
+crontab -e
+```
+- Add the following line
+```bash
+*/5 * * * * cd /path/to/Healthcheck-bot && python3 /path/to/Healthcheck-bot/src/main.py > /path/to/Healthcheck-bot/checks.log 2> /path/to/Healthcheck-bot/errors.log    
+```
 
 ## Write Unit Tests
 In order to write Unit Tests, you have to put it inside `tests`.
