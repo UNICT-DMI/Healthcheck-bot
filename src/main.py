@@ -16,9 +16,11 @@ def get_users() -> list[str]:
 
 async def check_ok(url: str) -> bool:
     async with AsyncClient(http2=True, follow_redirects=True) as client:
-        r = await client.get(url)
-        return codes.is_success(r.status_code)
-
+        try:
+            r = await client.get(url)
+            return codes.is_success(r.status_code)
+        except:
+            return codes.is_success(404)
   
 def check_ping(host: str) -> bool:
     param = '-n' if platform.system().lower() == 'windows' else '-c'
