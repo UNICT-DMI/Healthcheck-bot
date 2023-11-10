@@ -9,7 +9,7 @@
 A simple Python script to verify if a service is up. Whenever the service falls, a message will be sent to a user/group/channel with Telegram
 
 ## How to use?
-Just set two env variables:
+- Just set two env variables:
 - `QDBotToken`, your bot token
 - `QDBotIDs`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
 
@@ -18,6 +18,16 @@ Just set two env variables:
 export QDBotToken="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
 export QDBotIDs="10000000"                                      # Single ID
 export QDBotIDs="10000000;10000001;10000002"                    # Multiple IDs
+```
+
+### Run it every 5 minutes using crontab
+- Open crontab using:
+```bash
+$ crontab -e
+```
+- Add the following line
+```bash
+*/5 * * * * cd /path/to/Healthcheck-bot/ && python3 src/main.py > checks.log 2> errors.log    
 ```
 
 ## Write Unit Tests

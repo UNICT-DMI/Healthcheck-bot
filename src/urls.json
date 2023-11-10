@@ -1,4 +1,12 @@
 { 
-    "get": ["https://duckduckgo.com/", "https://google.com/"], 
-    "ping": ["https://duckduckgo.com/", "https://google.com/"]
+    "get": [
+        "https://api-opis.unictdev.org/", 
+        "https://telegram.unictdev.org/",
+        "https://open-job-dmi.unictdev.org/"
+    ], 
+    "ping": [
+        "https://api-opis.unictdev.org/", 
+        "https://telegram.unictdev.org/",
+        "https://open-job-dmi.unictdev.org/"
+    ]
 }
