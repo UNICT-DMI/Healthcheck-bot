@@ -15,7 +15,7 @@ A simple Python script to verify if a service is up. Whenever the service falls,
 
 ### Example
 ```yaml
-bot-token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
+bot_token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
 chat_ids: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
 ```
 

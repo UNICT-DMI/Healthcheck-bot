@@ -10,12 +10,16 @@ from time import sleep
 from json import load
 import yaml
 
+#try to open settings.yaml otherwise use settings.yaml.dist as config file
 try:
     with open('config/settings.yaml', 'r', encoding='utf-8') as yaml_config:
         config_map = yaml.load(yaml_config, Loader=yaml.SafeLoader)
 except FileNotFoundError:
     with open('config/settings.yaml.dist', 'r', encoding='utf-8') as yaml_config:
         config_map = yaml.load(yaml_config, Loader=yaml.SafeLoader)
+
+def get_token() -> str:
+    return config_map["token"]
 
 def get_users() -> list[str]:
     return config_map["chat_ids"]
@@ -38,7 +42,7 @@ def check_ping(host: str) -> bool:
 
 async def make_request_to_telegram(service_name: str, method_used: str, chat_id: str) -> list:
     message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
-    url = f'https://api.telegram.org/bot{config_map["bot_token"]}/sendMessage?chat_id={chat_id}&text={message}'
+    url = f'https://api.telegram.org/bot{get_token()}/sendMessage?chat_id={chat_id}&text={message}'
 
     async with AsyncClient(http2=True) as client:
         res = await client.post(url)

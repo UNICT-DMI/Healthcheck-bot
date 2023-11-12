@@ -42,8 +42,11 @@ tests = [
     },
     {
         'func': main.make_request_to_telegram,
-        'expected_res': {"ok":False,"error_code":400,"description":"Bad Request: chat not found"},
+        'expected_res': {"ok":False,"error_code":401,"description":"Unauthorized"},
         'arg': ('http://example.com', 'get', '0'),
+        'mock_obj': [main],
+        'mock_func': ['get_token'],
+        'mock_ret': ['123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11'],
         'is_async': True  
     },
     {
