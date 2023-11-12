@@ -10,9 +10,12 @@ from time import sleep
 from json import load
 import yaml
 
-with open('config/settings.yaml', 'r', encoding='utf-8') as yaml_config:
-    config_map = yaml.load(yaml_config, Loader=yaml.SafeLoader)
-
+try:
+    with open('config/settings.yaml', 'r', encoding='utf-8') as yaml_config:
+        config_map = yaml.load(yaml_config, Loader=yaml.SafeLoader)
+except FileNotFoundError:
+    with open('config/settings.yaml.dist', 'r', encoding='utf-8') as yaml_config:
+        config_map = yaml.load(yaml_config, Loader=yaml.SafeLoader)
 
 def get_users() -> list[str]:
     return config_map["chat_ids"]

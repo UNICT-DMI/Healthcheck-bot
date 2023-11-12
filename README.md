@@ -10,8 +10,8 @@ A simple Python script to verify if a service is up. Whenever the service falls,
 
 ## How to use?
 **Make a copy** of the file `config/settings.yaml.dist` in the same directory and rename it to `settings.yaml`:
-- Set `bot-token`, your bot token
-- Set `chat-ids`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
+- Set `bot_token`, your bot token
+- Set `chat_ids`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
 
 ### Example
 ```yaml
