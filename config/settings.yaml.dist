@@ -1,2 +1,2 @@
-QDBotToken: ""
-QDBotIDs: []
+bot_token: ""
+chat_ids: []
