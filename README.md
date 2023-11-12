@@ -9,15 +9,14 @@
 A simple Python script to verify if a service is up. Whenever the service falls, a message will be sent to a user/group/channel with Telegram
 
 ## How to use?
-- Just set two env variables:
-- `QDBotToken`, your bot token
-- `QDBotIDs`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
+**Make a copy** of the file `config/settings.yaml.dist` in the same directory and rename it to `settings.yaml`:
+- Set `QDBotToken`, your bot token
+- Set `QDBotIDs`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
 
-### Example in bash
-```bash
-export QDBotToken="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
-export QDBotIDs="10000000"                                      # Single ID
-export QDBotIDs="10000000;10000001;10000002"                    # Multiple IDs
+### Example
+```yaml
+QDBotToken: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
+QDBotIDs: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
 ```
 
 ### Run it every 5 minutes using crontab
