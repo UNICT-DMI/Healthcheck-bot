@@ -15,7 +15,7 @@ with open('config/settings.yaml', 'r', encoding='utf-8') as yaml_config:
 
 
 def get_users() -> list[str]:
-    return config_map["QDBotIDs"]
+    return config_map["chat_ids"]
 
 
 async def check_ok(url: str) -> bool:
@@ -35,7 +35,7 @@ def check_ping(host: str) -> bool:
 
 async def make_request_to_telegram(service_name: str, method_used: str, chat_id: str) -> list:
     message = f'⚠️ The service {service_name} contacted via {method_used} results offline!'
-    url = f'https://api.telegram.org/bot{config_map["QDBotToken"]}/sendMessage?chat_id={chat_id}&text={message}'
+    url = f'https://api.telegram.org/bot{config_map["bot_token"]}/sendMessage?chat_id={chat_id}&text={message}'
 
     async with AsyncClient(http2=True) as client:
         res = await client.post(url)
