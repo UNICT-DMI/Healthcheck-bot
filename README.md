@@ -15,8 +15,8 @@ A simple Python script to verify if a service is up. Whenever the service falls,
 
 ### Example
 ```yaml
-QDBotToken: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
-QDBotIDs: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
+bot-token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
+chat_ids: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
 ```
 
 ### Run it every 5 minutes using crontab
