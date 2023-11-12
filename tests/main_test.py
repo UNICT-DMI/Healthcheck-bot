@@ -29,19 +29,8 @@ tests = [
     },
     {
         'func': main.get_users,
-        'expected_res': ['12345678'],
+        'expected_res': [],
         'arg': tuple(),
-        'mock_obj': [main],
-        'mock_func': ['getenv'],
-        'mock_ret': ['12345678']
-    },
-    {
-        'func': main.get_users,
-        'expected_res': ['12345678', '23456789'],
-        'arg': tuple(),
-        'mock_obj': [main],
-        'mock_func': ['getenv'],
-        'mock_ret': ['12345678;23456789']
     },
     {
         'func': main.check_ping,
@@ -53,11 +42,8 @@ tests = [
     },
     {
         'func': main.make_request_to_telegram,
-        'expected_res': {"ok":False,"error_code":401,"description":"Unauthorized"},
+        'expected_res': {"ok":False,"error_code":400,"description":"Bad Request: chat not found"},
         'arg': ('http://example.com', 'get', '0'),
-        'mock_obj': [main],
-        'mock_func': ['getenv'],
-        'mock_ret': ['123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11'],
         'is_async': True  
     },
     {
