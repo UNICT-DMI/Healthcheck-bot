@@ -1,2 +1,8 @@
-bot_token: ""
+token: ""
 chat_ids: []
+api_id: ""
+api_hash: ""
+bots_to_check:
+  - username: ""
+    command: ""
+    expected_response: ""
