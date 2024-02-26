@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from httpx import AsyncClient, codes # Yes, we could use requests but httpx supports async tasks and HTTP/2!
-from telegram_checker import bot_checker
+from src.telegram_checker import bot_checker
 from asyncio import run
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command

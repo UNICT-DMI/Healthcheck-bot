@@ -44,25 +44,22 @@ def bot_checker(config: dict) -> None:
 
 
 async def main() -> None:
-    async with app:
-        for bot in config_map['bots_to_check']:
-            if not all(key in bot for key in ['username', 'command', 'expected_response']):
-                print(f'Skipping {bot["username"] if "id" in bot else "a bot without a specified username c:"}')
-                continue
-            
-            try:
-                await app.send_message(chat_id=bot['username'], text=bot['command'])
-            except RPCError as e:
-                print(f'There was a problem communicating with {bot["username"]}:', e)
+    for bot in config_map['bots_to_check']:
+        if not all(key in bot for key in ['username', 'command', 'expected_response']):
+            print(f'Skipping {bot["username"] if "id" in bot else "a bot without a specified username c:"}')
+            continue
+        
+        try:
+            await app.send_message(chat_id=bot['username'], text=bot['command'])
+        except RPCError as e:
+            print(f'There was a problem communicating with {bot["username"]}:', e)
 
-        await sleep(10) # Just to be sure the bot is not busy
-        # To prevent circular imports
-        # TODO: in a future refactor we could split the main code in another file only for webpages, 
-        #       would improve modularity and reuse of code with an helper file
-        print(received_answer)
-        from main import make_request_to_telegram
-        for bot in config_map['bots_to_check']:
-            if bot['username'] not in received_answer:
-                for user_to_notify in config_map['chat_ids']:
-                    await make_request_to_telegram(f'@{bot["username"]}', 'Telegram', user_to_notify)
-
+    await sleep(10) # Just to be sure the bot is not busy
+    # To prevent circular imports
+    # TODO: in a future refactor we could split the main code in another file only for webpages, 
+    #       would improve modularity and reuse of code with an helper file
+    from src.main import make_request_to_telegram
+    for bot in config_map['bots_to_check']:
+        if bot['username'] not in received_answer:
+            for user_to_notify in config_map['chat_ids']:
+                await make_request_to_telegram(f'@{bot["username"]}', 'Telegram', user_to_notify)
