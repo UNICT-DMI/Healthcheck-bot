@@ -109,12 +109,23 @@ tests = [
         'func': main.main,
         'expected_res': None,
         'arg': tuple(),
-        'mock_obj': [main],
-        'mock_func': ['handle_urls'],
-        'mock_ret': [None]
+        'mock_obj': [main, main],
+        'mock_func': ['handle_urls', 'bot_checker'],
+        'mock_ret': [None, None]
+    },
+    {
+        'func': main.get_token,
+        'expected_res': '',
+        'arg': tuple(),
+    },
+    {
+        'func': main.get_users,
+        'expected_res': [],
+        'arg': tuple(),  
     }
 ]
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize('test', tests)
 async def test_generic(mocker: MockerFixture, test: dict) -> None:
     spyed_objs = []

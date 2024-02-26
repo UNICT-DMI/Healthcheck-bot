@@ -12,11 +12,27 @@ A simple Python script to verify if a service is up. Whenever the service falls,
 **Make a copy** of the file `config/settings.yaml.dist` in the same directory and rename it to `settings.yaml`:
 - Set `bot_token`, your bot token
 - Set `chat_ids`, the ID(s) the bot will use to communicate any downtime. It's possible to set multiple IDs, semicolon separated without any space
+- Set the urls you'd like to check in `urls.json`
+
+### Telegram bots
+This is bot is now able to contact other bots and check if their running correctly!
+In order to setup this module, obtain an `api_id` and `api_hash` following the [Telegram guide](https://core.telegram.org/api/obtaining_api_id), now add them your `settings.yaml`. 
+The last step is to add the bot(s) to check in the same settings file, completing the value for each key:
+- Set `username`, the bot to be checked username without the prepending '@'
+- Set `command`, the command that will be sent to your bot
+- Set `expected_response`, the expected response from your bot. Any special character should be replaced with their equivalent character (a new line should be replaced with `\n`)
+Multiple bots could be added by added just by repeating the same structure of a sequence of objects in yaml. 
 
 ### Example
 ```yaml
 bot_token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
 chat_ids: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
+api_id: "123456"
+api_hash: "123456:ABC-DEF1234ghIkl-zyx57W2v"
+bots_to_check:
+  - username: "@WebpageBot"
+    command: "/start"
+    expected_response: "Hello, I'm the Webpage Bot!\nPlease send me up to 10 links and I will update previews for them."
 ```
 
 ### Run it every 5 minutes using crontab

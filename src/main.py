@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from httpx import AsyncClient, codes # Yes, we could use requests but httpx supports async tasks and HTTP/2!
-from os import getenv
+from src.telegram_checker import bot_checker
 from asyncio import run
 import platform    # For getting the operating system name
 import subprocess  # For executing a shell command
@@ -19,10 +19,10 @@ except FileNotFoundError:
         config_map = yaml.load(yaml_config, Loader=yaml.SafeLoader)
 
 def get_token() -> str:
-    return config_map["token"]
+    return config_map['token']
 
 def get_users() -> list[str]:
-    return config_map["chat_ids"]
+    return config_map['chat_ids']
 
 
 async def check_ok(url: str) -> bool:
@@ -87,12 +87,14 @@ def handle_communication(url: str, method: str) -> None:
 
 
 def main() -> None:
-    with open("src/urls.json", "r") as f:
+    with open('src/urls.json', 'r') as f:
         urls_list = load(f)
 
     for method, urls in urls_list.items():
         for url in urls:
             handle_urls(url, method)
+    
+    bot_checker(config_map)
         
 
 
