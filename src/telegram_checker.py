@@ -1,26 +1,27 @@
 from pyrogram import Client, filters
+from pyrogram.handlers import MessageHandler
 from pyrogram.errors import RPCError
 from pyrogram.types import Message
 from os.path import exists
-from asyncio import sleep
+from asyncio import sleep, run
 
 config_map = None
-app = Client('healthcheck_user_client')
 received_answer = []
 
-@app.on_message(filters.text & filters.bot)
-async def check_welcome(client: Client, message: Message) -> None:
+async def check_welcome(_: Client, message: Message) -> None:
     global received_answer
 
     for bots_to_check in config_map['bots_to_check']:
         if message.from_user.username == bots_to_check['username']:
-            if message.text == bots_to_check['expected_response']:
+            if bots_to_check['expected_response'] in message.text:
                 received_answer.insert(0, message.from_user.username)
             return
 
 
-def bot_checker(config: dict) -> None:
+async def bot_checker(config: dict) -> None:
     global config_map
+    app = Client('healthcheck_user_client')
+    app.add_handler(MessageHandler(check_welcome), filters.text & filters.bot)
     config_map = config
 
     # No bots to check
@@ -40,10 +41,11 @@ def bot_checker(config: dict) -> None:
 
         print('Starting login, after the client is connected you can exit with CTRL+C')
     
-    app.run(main())
+    async with app:
+        await main(app)
 
 
-async def main() -> None:
+async def main(app: Client) -> None:
     for bot in config_map['bots_to_check']:
         if not all(key in bot for key in ['username', 'command', 'expected_response']):
             print(f'Skipping {bot["username"] if "id" in bot else "a bot without a specified username c:"}')
@@ -58,7 +60,7 @@ async def main() -> None:
     # To prevent circular imports
     # TODO: in a future refactor we could split the main code in another file only for webpages, 
     #       would improve modularity and reuse of code with an helper file
-    from src.main import make_request_to_telegram
+    from .main import make_request_to_telegram
     for bot in config_map['bots_to_check']:
         if bot['username'] not in received_answer:
             for user_to_notify in config_map['chat_ids']:

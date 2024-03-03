@@ -110,7 +110,7 @@ tests = [
         'expected_res': None,
         'arg': tuple(),
         'mock_obj': [main, main],
-        'mock_func': ['handle_urls', 'bot_checker'],
+        'mock_func': ['handle_urls', 'run'],
         'mock_ret': [None, None]
     },
     {

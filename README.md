@@ -20,7 +20,7 @@ In order to setup this module, obtain an `api_id` and `api_hash` following the [
 The last step is to add the bot(s) to check in the same settings file, completing the value for each key:
 - Set `username`, the bot to be checked username without the prepending '@'
 - Set `command`, the command that will be sent to your bot
-- Set `expected_response`, the expected response from your bot. Any special character should be replaced with their equivalent character (a new line should be replaced with `\n`)
+- Set `expected_response`, the expected response from your bot or a substring. Any special character should be replaced with their equivalent character (a new line should be replaced with `\n`)
 Multiple bots could be added by added just by repeating the same structure of a sequence of objects in yaml. 
 
 ### Example
@@ -30,9 +30,9 @@ chat_ids: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
 api_id: "123456"
 api_hash: "123456:ABC-DEF1234ghIkl-zyx57W2v"
 bots_to_check:
-  - username: "@WebpageBot"
+  - username: "WebpageBot"
     command: "/start"
-    expected_response: "Hello, I'm the Webpage Bot!\nPlease send me up to 10 links and I will update previews for them."
+    expected_response: "Hello, I'm the Webpage Bot!"
 ```
 
 ### Run it every 5 minutes using crontab
