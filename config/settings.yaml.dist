@@ -1,6 +1,6 @@
 token: ""
 chat_ids: []
-api_id: ""
+api_id:
 api_hash: ""
 bots_to_check:
   - username: ""

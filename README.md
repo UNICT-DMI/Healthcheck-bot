@@ -27,7 +27,7 @@ Multiple bots could be added by added just by repeating the same structure of a 
 ```yaml
 bot_token: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" # Your bot token
 chat_ids: ["10000000", "10000001", "10000002"]  # Single ID or Multiple IDs
-api_id: "123456"
+api_id: 123456
 api_hash: "123456:ABC-DEF1234ghIkl-zyx57W2v"
 bots_to_check:
   - username: "WebpageBot"
