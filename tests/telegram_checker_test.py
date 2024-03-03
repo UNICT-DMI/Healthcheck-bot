@@ -1,37 +1,27 @@
 import pytest
 from pytest_mock import MockerFixture
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, patch
 import src.telegram_checker as tg
 import src.main as main
 from pyrogram.client import Client
-import asyncio
 
 tests = [
     {
         'func': tg.bot_checker,
         'expected_res': None,
-        'arg': ({'bots_to_check': [{'username':'WebpageBot', 'command':'/start', 'expected_response':'Hello, I\'m the Webpage Bot!\nPlease send me up to 10 links and I will update previews for them.'}]},),
-        'is_async': False
+        'arg': ({'bots_to_check': [{'username':'WebpageBot', 'command':'/start', 'expected_response':'Hello'}]},),
+        'is_async': True
     },
     {
         'func': tg.bot_checker,
         'expected_res': None,
         'arg': ({},),
-        'is_async': False
-    },
-    {
-        'func': tg.bot_checker,
-        'expected_res': None,
-        'arg': ({'api_id':'12345', 'api_hash':'0123456789abcdef0123456789abcdef','bots_to_check': [{'username':'WebpageBot', 'command':'/start', 'expected_response':'Hello, I\'m the Webpage Bot!\nPlease send me up to 10 links and I will update previews for them.'}]},),
-        'mock_obj': [Client],
-        'mock_func': ['run'],
-        'mock_ret': [None],
-        'is_async': False
+        'is_async': True
     },
     {
         'func': tg.main,
         'expected_res': None,
-        'arg': tuple(),
+        'arg': (Client('healthcheck_user_client'),),
         'mock_obj': [main, Client],
         'mock_func': ['make_request_to_telegram', 'send_message'],
         'mock_ret': [None, None],
@@ -41,7 +31,7 @@ tests = [
     {
         'func': tg.main,
         'expected_res': None,
-        'arg': tuple(),
+        'arg': (Client('healthcheck_user_client'),),
         'mock_obj': [main, Client],
         'mock_func': ['make_request_to_telegram', 'send_message'],
         'mock_ret': [None, None],

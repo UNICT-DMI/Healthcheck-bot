@@ -130,5 +130,5 @@ dmypy.json
 
 # Custom
 config/settings.yaml
-src/healthcheck_user_client.session
+healthcheck_user_client.session
 .vscode
